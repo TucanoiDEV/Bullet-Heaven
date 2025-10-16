@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
+    EntityStats entityStats; // Reference to the EntityStats component of the enemy
     public float moveSpeed;
     GameObject player; // Reference to the player object
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        entityStats = GetComponent<EntityStats>();
         player = GameObject.FindWithTag("Player");
         // Encontrando o jogador a partir da tag "Player"  
     }
@@ -28,8 +30,10 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            Destroy(this.gameObject);
-            // Destrói o inimigo ao colidir com o objeto com a tag "Player"
+            collision.gameObject.GetComponent<EntityStats>().hp -= entityStats.attackDamage;
+            //Ao BoxCollider do inimigo colidir com o elemento com a tag "Player", o inimigo recebe acesso ao componente EntityStats do elemento com a tag "Player"
+            //e reduz o hp do elemento com a tag "Player" em 5
+            Destroy(gameObject);
         }
     }
 }
